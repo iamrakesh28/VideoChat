@@ -21,13 +21,14 @@ def main():
             print("Couldn't read from camera")
             break
         # display
-        cv2.imshow("Video", frame)
-        if cv2.waitkey(1) & 0xFF == ord('q'):
+        cv2.imshow("VideoC", frame)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
         # frame serialised
         data = pickle.dumps(frame)
         # use 'L' for larger frame. 'H' -> unsigned int, 'L' -> unsigned long
-        clientsocket.sendall(struct.pack('H', len(data)) + data)
+        clientsocket.sendall(struct.pack('L', len(data)) + data)
+    clientsocket.sendall(struct.pack('L', 0) + "")
     print("Exiting..")
     cap.release()
     cv2.destroyAllWindows()
